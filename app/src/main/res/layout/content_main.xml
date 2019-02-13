@@ -62,6 +62,7 @@
             android:id="@+id/btnEnter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:enabled="false"
             android:onClick="buttonGuuessClicked"
             android:text="@string/guess_the_string_try_to_guess_the_secret_word_one_letter_at_a_time" />
 

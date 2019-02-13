@@ -5,14 +5,15 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.text.TextWatcher;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Random;
 
 import android.widget.*;
 
@@ -23,6 +24,12 @@ public class MainActivity extends AppCompatActivity {
     private String guessedWord, word ,letter;
     private int index;
     private int incorrectCount;
+    private TextView outputShuffledWord;
+    private TextView outputGussedLetter;
+    private TextView outputIncorrect;
+    private TextView outputFinal;
+    private  EditText userEnter;
+    private Button guessButton;
 
 
     @Override
@@ -42,9 +49,16 @@ public class MainActivity extends AppCompatActivity {
         });
 
         secretWords = new ArrayList(Arrays.asList("APPLE", "BANANA", "CHERRY", "FISH",
-                "EDITOR", "ARTISIT", "SOFTWARE", "WRITE", "READ", "GAMING",
+                "EDITOR", "ARTIST", "SOFTWARE", "WRITE", "READ", "GAMING",
                 "LUNCH", "DINNER", "HOUSE", "BOOKS", "ANIMALS"));
 
+
+        outputShuffledWord = (TextView) findViewById(R.id.txtShuffledWord);
+        userEnter = (EditText) findViewById(R.id.txtEnterWord);
+        outputGussedLetter = (TextView) findViewById(R.id.txtShowEnteredLetter);
+        outputIncorrect = (TextView) findViewById(R.id.textIncorrectGuess);
+        outputFinal = (TextView) findViewById(R.id.txtShowFinalOutput);
+        guessButton = (Button) findViewById(R.id.btnEnter);
 
         guessedWord = "";
         word = "";
@@ -53,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
         incorrectCount = 0;
 
         shuffle();
+
+        userEnter.addTextChangedListener(checkText);
 
     }
 
@@ -64,22 +80,35 @@ public class MainActivity extends AppCompatActivity {
         Collections.shuffle(splitWord);
         for (String c : splitWord)
             shuffledWord += c;
-
-        TextView outputShuffledWord = (TextView) findViewById(R.id.txtShuffledWord);
         outputShuffledWord.setText(shuffledWord.toUpperCase());
 
     }
 
+    private TextWatcher checkText = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                letter = userEnter.getText().toString();
+                guessButton.setEnabled(!letter.isEmpty());
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+
     public void buttonGuuessClicked(View V){
-       EditText userEnter = (EditText) findViewById(R.id.txtEnterWord);
-       letter = userEnter.getText().toString().toUpperCase();
-       guess();
-       userEnter.setText("");
+        letter = userEnter.getText().toString().toUpperCase();
+        guess();
+        userEnter.setText("");
     }
 
     public void guess(){
-        TextView outputGussedLetter = (TextView) findViewById(R.id.txtShowEnteredLetter);
-        TextView outputIncorrect = (TextView) findViewById(R.id.textIncorrectGuess);
 
         if(letter.charAt(0) == word.charAt(index)){
             guessedWord = guessedWord+letter;
@@ -94,16 +123,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void checkWin(){
-        TextView outputFinal = (TextView) findViewById(R.id.txtShowFinalOutput);
-        Button guessButton = (Button) findViewById(R.id.btnEnter);
         if(guessedWord.equalsIgnoreCase(word)){
             if(incorrectCount == 0) {
                 outputFinal.setText("Congratulations! You have guessed the word without mistakes!");
                 guessButton.setEnabled(false);
+                userEnter.setFocusable(false);
             }
             else{
                 outputFinal.setText("You have guessed the word in "+ incorrectCount + " tries!");
                 guessButton.setEnabled(false);
+                userEnter.setFocusable(false);
             }
 
         }
