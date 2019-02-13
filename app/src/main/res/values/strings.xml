@@ -3,4 +3,6 @@
     <string name="action_settings">Settings</string>
     <string name="try_to_guess_the_secret_word_one_letter_at_a_time">Try to guess the secret word, One letter at a time</string>
     <string name="check">CHECK</string>
+    <string name="textview">TextView</string>
+    <string name="guess_the_string_try_to_guess_the_secret_word_one_letter_at_a_time">Guess the word</string>
 </resources>

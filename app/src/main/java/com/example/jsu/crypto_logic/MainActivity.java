@@ -18,7 +18,12 @@ import android.widget.*;
 
 public class MainActivity extends AppCompatActivity {
 
-    ArrayList secretWords;
+    ArrayList<String> secretWords;
+    ArrayList<String> splitWord;
+    private String guessedWord, word ,letter;
+    private int index;
+    private int incorrectCount;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,38 +41,72 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        secretWords = new ArrayList(Arrays.asList("APPLE", "BANANA", "CHERRY","programming", "fish", "cairo", "arabs", "quraan", "sunnah",
-                "editor", "photography", "artist", "software", "write", "read", "gaming",
-                "lunch", "participate", "lunch", "dinner", "house", "books", "animals"));
+        secretWords = new ArrayList(Arrays.asList("APPLE", "BANANA", "CHERRY", "FISH",
+                "EDITOR", "ARTISIT", "SOFTWARE", "WRITE", "READ", "GAMING",
+                "LUNCH", "DINNER", "HOUSE", "BOOKS", "ANIMALS"));
 
-       startGame();
-    }
 
-    public void startGame(){
+        guessedWord = "";
+        word = "";
+        letter = "";
+        index = 0;
+        incorrectCount = 0;
 
-        String sWord = shuffledWord();
-
-        TextView outputShuffledWord = (TextView) findViewById(R.id.txtShuffledWord);
-        outputShuffledWord.setText(sWord.toUpperCase().toString());
-
-        EditText userEnter = (EditText) findViewById(R.id.txtEnterWord);
-        char letter = userEnter.getText().charAt(0);
-
-        TextView userWordDisplay = (TextView) findViewById(R.id.txtShowEnteredLetter);
-        userWordDisplay.setText(letter);
+        shuffle();
 
     }
 
-    public String shuffledWord(){
+    public void shuffle(){
         int randomIndex = (int)(Math.random() * secretWords.size());
-        String word = String.valueOf(secretWords.get(randomIndex));
         String shuffledWord = "";
-        ArrayList<String> splitWord = new ArrayList(Arrays.asList(word.split("")));
+        word = String.valueOf(secretWords.get(randomIndex));
+        splitWord = new ArrayList(Arrays.asList(word.split("")));
         Collections.shuffle(splitWord);
         for (String c : splitWord)
             shuffledWord += c;
 
-        return shuffledWord;
+        TextView outputShuffledWord = (TextView) findViewById(R.id.txtShuffledWord);
+        outputShuffledWord.setText(shuffledWord.toUpperCase());
+
+    }
+
+    public void buttonGuuessClicked(View V){
+       EditText userEnter = (EditText) findViewById(R.id.txtEnterWord);
+       letter = userEnter.getText().toString().toUpperCase();
+       guess();
+       userEnter.setText("");
+    }
+
+    public void guess(){
+        TextView outputGussedLetter = (TextView) findViewById(R.id.txtShowEnteredLetter);
+        TextView outputIncorrect = (TextView) findViewById(R.id.textIncorrectGuess);
+
+        if(letter.charAt(0) == word.charAt(index)){
+            guessedWord = guessedWord+letter;
+            outputGussedLetter.setText(guessedWord.toUpperCase());
+            index += 1;
+        }
+        else{
+            incorrectCount += 1;
+            outputIncorrect.setText("Incorrect guesses: " + incorrectCount);
+        }
+        checkWin();
+    }
+
+    public void checkWin(){
+        TextView outputFinal = (TextView) findViewById(R.id.txtShowFinalOutput);
+        Button guessButton = (Button) findViewById(R.id.btnEnter);
+        if(guessedWord.equalsIgnoreCase(word)){
+            if(incorrectCount == 0) {
+                outputFinal.setText("Congratulations! You have guessed the word without mistakes!");
+                guessButton.setEnabled(false);
+            }
+            else{
+                outputFinal.setText("You have guessed the word in "+ incorrectCount + " tries!");
+                guessButton.setEnabled(false);
+            }
+
+        }
     }
 
     @Override

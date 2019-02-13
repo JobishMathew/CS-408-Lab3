@@ -24,21 +24,30 @@
             android:layout_height="wrap_content"
 
             android:text="@string/try_to_guess_the_secret_word_one_letter_at_a_time"
-            />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/txtShuffledWord"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="24sp"
-            />
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/txtShowEnteredLetter"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="24sp"
-            />
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/textIncorrectGuess"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/txtEnterWord"
@@ -46,12 +55,21 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:autofillHints="" />
+            android:autofillHints=""
+            android:maxLength="1"/>
 
         <Button
             android:id="@+id/btnEnter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/check" />
+            android:onClick="buttonGuuessClicked"
+            android:text="@string/guess_the_string_try_to_guess_the_secret_word_one_letter_at_a_time" />
+
+        <TextView
+            android:id="@+id/txtShowFinalOutput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="18sp" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
